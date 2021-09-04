@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<!-- Created By CodingNepal - www.codingnepalweb.com -->
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Documento</title>
+  {% load static %}
+  <link rel="stylesheet" href="{% static 'estudiante/style.css' %}">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"/>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-KyZXEAg3QhqLMpG8r+8fhAXLRk2vvoC2f3B09zVXn8CA5QIVfZOJ3BCsw2P0p/We" crossorigin="anonymous">
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+</head>
+<body onload="startTimer()">
+  <div class="wrapper">
+    <nav>
+      <input type="checkbox" id="show-search">
+      <input type="checkbox" id="show-menu">
+      <label for="show-menu" class="menu-icon"><i class="fas fa-bars"></i></label>
+      <div class="content">
+      <div class="logo col-2">
+        <img src="https://raw.githubusercontent.com/epulla/RaspberryPIDjango/master/recursos/logo%201.JPG" class="rounded img-fluid" alt="logo">
+      </div>
+        <ul class="links">
+          <li class="d-flex align-items-center"><a href="/estudiante/{{matricula}}">Perfil</a></li>
+          <li class="d-flex align-items-center"><a href="/estudiante/{{matricula}}/horarios">Registrar Horario</a></li>
+          <li class="d-flex align-items-center"><a href="{{ request.path }}">Empezar Práctica</a></li>
+          <li class="d-flex align-items-center"><a href="/login">Salir</a></li>
+        </ul>
+      </div>
+      <!-- <label for="show-search" class="search-icon"><i class="fas fa-search"></i></label>
+      <form action="#" class="search-box">
+        <input type="text" placeholder="Type Something to Search..." required>
+        <button type="submit" class="go-icon"><i class="fas fa-long-arrow-alt-right"></i></button>
+      </form> -->
+    </nav>
+  </div>
+  <div class="container mt-5">
+    {% if isRegisterFound %}
+    <div class="row text-center">
+      <p class="fs-2 fw-bold">{{ horario.laboratorio.materia }}</p>
+    </div>
+    <div class="row">
+      <p class="fs-4">Profesor: {{ horario.laboratorio.profesor.nombres }} {{ horario.laboratorio.profesor.apellidos }}</p>
+      <p class="fs-4">Paralelo: {{ horario.laboratorio.paralelo }}</p>
+      {% if isInTime and isInDay %}
+      <p class="fs-4">Horario: {{day}} {{horario.hora_inicio|time:'H:i'}} - {{horario.hora_fin|time:'H:i'}} <span class="text-success">(Se encuentra en el horario)</span></p>
+      {% else %}
+      <p class="fs-4">Horario: {{day}} {{horario.hora_inicio|time:'H:i'}} - {{horario.hora_fin|time:'H:i'}} <span class="text-danger">(Fuera del horario)</p>
+      {% endif %}
+      <p class="fs-4">Fecha y Hora actual: <span id="fecha"></span> <span id="txt"></span></p>      
+    </div>
+    <div class="row my-2">
+      <div class="col d-flex justify-content-start">
+        <button class="btn btn-dark" {{ isInTime|yesno:",disabled" }}><a class="btn-dark" href="https://github.com/epulla/RaspberryPIDjango/raw/master/recursos/Modelo_practica_laboratorio.pdf" target="_blank">Descargar PDF</a></button>
+      </div>
+    </div>
+    <div class="row my-3">
+        Para proceder a configurar el router escriba los siguiente comandos:
+    </div>
+    <div class="row card">
+      <div class="card-body">
+        <code>
+          $ kermit -l /dev/ttyUSBx <code class="text-secondary"># donde x representar el número de router [1,2,3,4]</code>
+        </code>
+        <br/>
+        <code>
+          $ connect
+        </code>
+      </div>      
+    </div>
+    <div class="row d-flex justify-content-center">
+      <div class="col-8">
+        <img class="img-fluid" src="https://raw.githubusercontent.com/epulla/RaspberryPIDjango/master/recursos/imagen%20practica.JPG" alt="Packet Tracer">
+      </div>
+      <div class="col-1 d-flex flex-column align-items-center mt-5">
+        {% if isInTime %}
+        <div class="row my-3">
+          <button class="btn btn-primary target-button"><a class="btn-primary" target="_blank" href=http://{{ipv4}}:{{port}}>Router 1</a></button>
+        </div>
+        <div class="row my-3">
+          <button class="btn btn-secondary target-button"><a class="btn-secondary" target="_blank" href=http://{{ipv4}}:{{port}}>Router 2</a></button>
+        </div>
+        <div class="row my-3">
+          <button class="btn btn-danger target-button"><a class="btn-danger" target="_blank" href=http://{{ipv4}}:{{port}}>Router 3</a></button>
+        </div>
+        <div class="row my-3">
+          <button class="btn btn-warning target-button"><a class="btn-warning" target="_blank" href=http://{{ipv4}}:{{port}}>Router 4</a></button>
+        </div>
+        {% else %}
+        <div class="row my-3">
+          <button class="btn btn-primary target-button" disabled><a class="btn-primary" target="" href="">Router 1</a></button>
+        </div>
+        <div class="row my-3">
+          <button class="btn btn-secondary target-button" disabled><a class="btn-secondary" target="" href="">Router 2</a></button>
+        </div>
+        <div class="row my-3">
+          <button class="btn btn-danger target-button" disabled><a class="btn-danger" target="" href="">Router 3</a></button>
+        </div>
+        <div class="row my-3">
+          <button class="btn btn-warning target-button" disabled><a class="btn-warning" target="" href="">Router 4</a></button>
+        </div>
+        {% endif %}
+      </div>
+    </div>
+    <script>
+      // Fecha
+      const days = ["Lunes", "Martes", "Miércoles", "Jueves", "Viernes", "Sábado", "Domingo"];
+      let now = new Date();
+      let dateString = now.toDateString().split(" ");
+      dateString.shift();
+      dateString = days[now.getDay() - 1] + " " + dateString.join("-")
+      document.getElementById("fecha").innerHTML = dateString;
+
+      // Hora inicio
+      let horaInicioList = "{{horario.hora_inicio|time:'H:i:s'}}".split(":");
+      let horaInicio = new Date();
+      horaInicio.setHours(parseInt(horaInicioList[0]), parseInt(horaInicioList[1]), parseInt(horaInicioList[2]));
+
+      // Hora fin
+      let horaFinList = "{{horario.hora_fin|time:'H:i:s'}}".split(":");
+      let horaFin = new Date();
+      horaFin.setHours(parseInt(horaFinList[0]), parseInt(horaFinList[1]), parseInt(horaFinList[2]));
+
+      // Django vars
+      const djangoIsInDay = "{{day}}" == days[now.getDay() - 1];
+      const djangoIsInTime = "{{isInTime}}" == "True";
+
+      function disableButtons() {
+        let btns = document.getElementsByClassName("target-button");
+        for (let btn of btns) {
+          // Disable button
+          btn.disabled = true;
+
+          // Clear link
+          link = btn.children[0];
+          link.href = "";
+          link.target = "";
+        }
+      }
+
+      function startTimer() {
+        const today = new Date();
+        let h = today.getHours();
+        let m = today.getMinutes();
+        let s = today.getSeconds();
+        h = checkTime(h);
+        m = checkTime(m);
+        s = checkTime(s);
+        let isInTime = today >= horaInicio && today <= horaFin;
+        if (djangoIsInDay) {
+          if ((!djangoIsInTime && isInTime) || (djangoIsInTime && !isInTime)) {
+            window.location.reload();
+          }
+        }
+        document.getElementById('txt').innerHTML =  h + ":" + m + ":" + s;
+        setTimeout(startTimer, 1000);
+      }
+      
+      function checkTime(i) {
+        if (i < 10) {i = "0" + i};  // add zero in front of numbers < 10
+        return i;
+      }
+    </script>
+    {% else %}
+    <div class="dummy-text-horario">
+      <h2>Debe registrarse en un horario primero</h2><br/>
+      <a class="btn btn-danger fs-4" href="/estudiante/{{matricula}}/horarios">Horarios</a>
+      </div>
+    {% endif %}
+</div>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-U1DAWAznBHeqEIlVSCgzq+c9gqGAJn5c/t99JyeKa9xxaYpSvHU5awsuZVVFIhvj" crossorigin="anonymous"></script>
+</body>
+</html>

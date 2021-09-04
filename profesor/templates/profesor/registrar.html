@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<!-- Created By CodingNepal - www.codingnepalweb.com -->
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Documento</title>
+  {% load static %}
+  <link rel="stylesheet" href="{% static 'profesor/style.css' %}">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"/>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-KyZXEAg3QhqLMpG8r+8fhAXLRk2vvoC2f3B09zVXn8CA5QIVfZOJ3BCsw2P0p/We" crossorigin="anonymous">
+</head>
+<body>
+  <div class="wrapper">
+    <nav>
+      <input type="checkbox" id="show-search">
+      <input type="checkbox" id="show-menu">
+      <label for="show-menu" class="menu-icon"><i class="fas fa-bars"></i></label>
+      <div class="content">
+      <!-- <div class="logo"><a href="#">Raspberry Pi 4</a></div> -->
+      <div class="logo col-2">
+        <img src="https://raw.githubusercontent.com/epulla/RaspberryPIDjango/master/recursos/logo%201.JPG" class="rounded img-fluid" alt="logo">
+      </div>  
+      <ul class="links">
+        <li class="d-flex align-items-center"><a href="/profesor/{{matricula}}">Perfil</a></li>
+        <li class="d-flex align-items-center"><a href="{{ request.path }}">Registrar Practicas</a></li>
+        <li class="d-flex align-items-center"><a href="/login">Salir</a></li>    
+          <!-- <li><a href="#">Feedback</a></li> -->
+        </ul>
+      </div>
+      <!-- <label for="show-search" class="search-icon"><i class="fas fa-search"></i></label>
+      <form action="#" class="search-box">
+        <input type="text" placeholder="Type Something to Search..." required>
+        <button type="submit" class="go-icon"><i class="fas fa-long-arrow-alt-right"></i></button>
+      </form> -->
+    </nav>
+  </div>
+  <div class="container mt-5">
+    {% if messages %}
+    {% for message in messages %}
+    <div class="alert alert-success alert-dismissible fade show mt-3" role="alert">
+      {{ message }}
+      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+    {% endfor %}
+    {% endif %}
+    <div class="row">
+      <h2>Estudiantes no registrados:</h2>
+      <p>Escoja un estudiante para registrarlo a un horario</p>
+      <table class="table table-striped table-hover">
+        <thead>
+          <tr>
+            <th>Matrícula</th>
+            <th>Nombres</th>
+            <th>Apellidos</th>
+            <th>Correo</th>
+            <th>Acción</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for estudiante in estudiantes %}
+          <tr>
+            <td>{{estudiante.id}}</td>
+            <td>{{estudiante.nombres}}</td>
+            <td>{{estudiante.apellidos}}</td>
+            <td>{{estudiante.email}}</td>
+            <td><form method="POST">{% csrf_token %}<button class="btn btn-success" type="submit" name="register_estudiante" value={{estudiante.id}}>Escoger</button></form></tr>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-U1DAWAznBHeqEIlVSCgzq+c9gqGAJn5c/t99JyeKa9xxaYpSvHU5awsuZVVFIhvj" crossorigin="anonymous"></script>
+
+</body>
+</html>

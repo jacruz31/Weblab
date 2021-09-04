@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<!-- Created By CodingNepal - www.codingnepalweb.com -->
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Documento</title>
+  {% load static %}
+  {% load i18n %}
+  <link rel="stylesheet" href="{% static 'estudiante/style.css' %}">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"/>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-KyZXEAg3QhqLMpG8r+8fhAXLRk2vvoC2f3B09zVXn8CA5QIVfZOJ3BCsw2P0p/We" crossorigin="anonymous">
+</head>
+<body>
+  <div class="wrapper">
+    <nav>
+      <input type="checkbox" id="show-search">
+      <input type="checkbox" id="show-menu">
+      <label for="show-menu" class="menu-icon"><i class="fas fa-bars"></i></label>
+      <div class="content">
+      <!-- <div class="logo"><a href="#">Raspberry Pi 4</a></div> -->
+      <div class="logo col-2">
+        <img src="https://raw.githubusercontent.com/epulla/RaspberryPIDjango/master/recursos/logo%201.JPG" class="rounded img-fluid" alt="logo">
+      </div>  
+      <ul class="links">
+          <li class="d-flex align-items-center"><a href="/estudiante/{{matricula}}">Perfil</a></li>
+          <li class="d-flex align-items-center"><a href="{{ request.path }}">Registrar Horario</a></li>
+          <li class="d-flex align-items-center"><a href="/estudiante/{{matricula}}/practicas">Empezar Práctica</a></li>
+          <li class="d-flex align-items-center"><a href="/login">Salir</a></li>
+          <!-- <li><a href="#">Feedback</a></li> -->
+        </ul>
+      </div>
+      <!-- <label for="show-search" class="search-icon"><i class="fas fa-search"></i></label>
+      <form action="#" class="search-box">
+        <input type="text" placeholder="Type Something to Search..." required>
+        <button type="submit" class="go-icon"><i class="fas fa-long-arrow-alt-right"></i></button>
+      </form> -->
+    </nav>
+  </div>
+  <div class="container mt-5">
+    {% if registros %}
+    <h2>Horario Registrado</h2>
+    <table class="table table-striped table-success table-hover">
+      <thead>
+        <tr>
+          <th>Materia</th>
+          <th>Profesor</th>
+          <th>Paralelo</th>
+          <th>Día</th>
+          <th>Hora</th>
+          <th>Accion</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for registro in registros %}
+          <tr>
+            <td>{{registro.horario.laboratorio.materia}}</td>
+            <td>{{registro.horario.laboratorio.profesor.nombres}} {{registro.horario.laboratorio.profesor.apellidos}}</td>
+            <td>{{registro.horario.laboratorio.paralelo}}</td>
+            {% language 'es-co' %}
+            <td>{{registro.horario.fecha|date:'l'}}</td>
+            {% endlanguage %}
+            <td>{{registro.horario.hora_inicio|time:'H:i'}} - {{registro.horario.hora_fin|time:'H:i'}}</td>
+            <td><form method="POST">{% csrf_token %}<button class="btn btn-danger" type="submit" name="delete_register" value={{registro.id}}>Eliminar</button></form></tr>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+    {% endif %}
+    <h2>Horarios Disponibles</h2>
+    <table class="table table-striped table-hover">
+        <thead>
+          <tr>
+            <th>Materia</th>
+            <th>Profesor</th>
+            <th>Paralelo</th>
+            <th>Día</th>
+            <th>Hora</th>
+            <th>Accion</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for horario in horarios_disponibles %}
+            <tr>
+              <td>{{horario.laboratorio.materia}}</td>
+              <td>{{horario.laboratorio.profesor.nombres}} {{horario.laboratorio.profesor.apellidos}}</td>
+              <td>{{horario.laboratorio.paralelo}}</td>
+              {% language 'es-co' %}
+              <td>{{horario.fecha|date:'l'}}</td>
+              {% endlanguage %}
+              <td>{{horario.hora_inicio|time:'H:i'}} - {{horario.hora_fin|time:'H:i'}}</td>
+              {% if registros %}
+                <td><button class="btn btn-light" type="submit" name="register" value="" disabled>Registrar</button></form></tr>
+              {% else %}
+                <td><form method="POST">{% csrf_token %}<button class="btn btn-success" type="submit" name="register" value={{matricula}}#{{horario.id}}>Registrar</button></form></tr>
+              {% endif %}
+              </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+  </div>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-U1DAWAznBHeqEIlVSCgzq+c9gqGAJn5c/t99JyeKa9xxaYpSvHU5awsuZVVFIhvj" crossorigin="anonymous"></script>
+
+</body>
+</html>

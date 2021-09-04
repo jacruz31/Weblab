@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<!-- Created By CodingNepal - www.codingnepalweb.com -->
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Documento</title>
+  {% load static %}
+  <link rel="stylesheet" href="{% static 'profesor/style.css' %}">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"/>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-KyZXEAg3QhqLMpG8r+8fhAXLRk2vvoC2f3B09zVXn8CA5QIVfZOJ3BCsw2P0p/We" crossorigin="anonymous">
+</head>
+<body>
+  <div class="wrapper">
+    <nav>
+      <input type="checkbox" id="show-search">
+      <input type="checkbox" id="show-menu">
+      <label for="show-menu" class="menu-icon"><i class="fas fa-bars"></i></label>
+      <div class="content">
+      <div class="logo col-2">
+          holasfdasfd
+        <img src="https://raw.githubusercontent.com/epulla/RaspberryPIDjango/master/recursos/logo%201.JPG" class="rounded img-fluid" alt="logo">
+      </div>
+      <!-- <div class="logo"><a href="#">Raspberry Pi 4</a></div> -->
+        {% if isFound %}
+        <ul class="links">
+          <li class="d-flex align-items-center"><a href="{{ request.path }}">Perfil</a></li>
+          <li class="d-flex align-items-center"><a href="{{ request.path }}/registrar">Registrar Practicas</a></li>
+          <li class="d-flex align-items-center"><a href="/login">Salir</a></li>    
+        </ul>
+          </li>
+          <!-- <li><a href="#">Feedback</a></li> -->
+        </ul>
+        {% else %}
+        <ul class="links">
+          <li class="d-flex align-items-center"><a href="{{ request.path }}">Perfil</a></li>
+          </li>
+          <!-- <li><a href="#">Feedback</a></li> -->
+        </ul>
+        {% endif %}
+      </div>
+      <!-- <label for="show-search" class="search-icon"><i class="fas fa-search"></i></label>
+      <form action="#" class="search-box">
+        <input type="text" placeholder="Type Something to Search..." required>
+        <button type="submit" class="go-icon"><i class="fas fa-long-arrow-alt-right"></i></button>
+      </form> -->
+    </nav>
+  </div>
+  <div class="container my-5">
+    {% if isFound %}
+    <div class="row">
+      <div class="col d-flex justify-content-center">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/1/12/User_icon_2.svg/2048px-User_icon_2.svg.png" alt="Imagen Estudiante" class="img-thumbnail" style="width: 400px;"/>
+      </div>
+      <div class="col container">
+        <div class="row">
+          <p class="fs-2">
+            ¡Bienvenido {{user_estudiante.nombres}} {{user_estudiante.apellidos}}!
+          </p>
+        </div>
+        <div class="row">
+          <div class="card">
+            <div class="card-header">
+              <p class="fs-3">Tus datos:</p>
+            </div>
+            <ul class="list-group list-group-flush">
+              <li class="list-group-item">Matricula: {{user_estudiante.id}}</li>
+              <li class="list-group-item">Usuario: {{user_estudiante.username}}</li>
+              <li class="list-group-item">Correo: {{user_estudiante.email}}</li>
+              <li class="list-group-item">Rol: {{cargo}}</li>
+              <li class="list-group-item"><a href="{{ request.path }}/registrar" class="btn btn-primary">Registrar estudiantes</a></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+      
+    {% else %}
+      <h2>Aquí ira el perfil de usuario</h2>
+      <h2>Nombre, email, cedula, etc</h2>
+    {% endif %}
+  </div>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-U1DAWAznBHeqEIlVSCgzq+c9gqGAJn5c/t99JyeKa9xxaYpSvHU5awsuZVVFIhvj" crossorigin="anonymous"></script>
+</body>
+</html>

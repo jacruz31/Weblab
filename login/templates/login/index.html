@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<!-- Created By CodingNepal -->
+<html lang="en" dir="ltr">
+   <head>
+      <meta charset="utf-8">
+      <title>Inicia Sesión</title>
+      {% load static %}
+      <link rel="stylesheet" href="{% static 'login/style.css' %}">
+      <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-KyZXEAg3QhqLMpG8r+8fhAXLRk2vvoC2f3B09zVXn8CA5QIVfZOJ3BCsw2P0p/We" crossorigin="anonymous">
+   </head>
+   <body>
+      <div class="wrapper">
+         <div class="title">
+            <img src="https://raw.githubusercontent.com/epulla/RaspberryPIDjango/master/recursos/logo%201.JPG" class="card-img-top" alt="logo">
+            <!-- <p class="fs-5">
+               Inicio de Sesión
+            </p> -->
+         </div>
+         <form method="POST" class="card-body">
+            {% csrf_token %}
+            <div class="field">
+               {{ username_form }}
+               <label>Usuario</label>
+            </div>
+            <div class="field">
+               {{ pass_form }}
+               <label>Contraseña</label>
+            </div>
+            {% if warning_mssg %}
+               <div class="alert alert-danger alert-dismissible fade show mt-3" role="alert">
+                  {{ warning_mssg }}
+                  <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+               </div>
+            {% endif %}
+            <!-- <div class="field">
+               <input type="text" value="{{ username }}" required>
+               <label>Usuario</label>
+            </div>
+            <div class="field">
+               <input type="password" value="{{ password }}" required>
+               <label>Contraseña</label>
+            </div> -->
+            <!-- <div class="content">
+               <div class="checkbox">
+                  <input type="checkbox" id="remember-me">
+                  <label for="remember-me">Remember me</label>
+               </div>
+               <div class="pass-link">
+                  <a href="#">Forgot password?</a>
+               </div>
+            </div> -->
+            <div class="field">
+               <!-- <input type="submit" value="Login" placeholder="Login"> -->
+               <button type="submit" name="login" class="w-100 btn btn-dark fs-3" style="background-color: #171c24; border-radius: 25px;">Login</button>
+            </div>
+         </form>
+      </div>
+      <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-U1DAWAznBHeqEIlVSCgzq+c9gqGAJn5c/t99JyeKa9xxaYpSvHU5awsuZVVFIhvj" crossorigin="anonymous"></script>
+   </body>
+</html>
